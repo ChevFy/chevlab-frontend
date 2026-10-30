@@ -28,6 +28,23 @@ export interface LatestMetric {
 /** GET /api/history?hours=N — ordered list of snapshots (same shape as latest). */
 export type HistoryPoint = LatestMetric;
 
+/** Docker port binding (host side). */
+export interface PortBinding {
+  HostIp: string;
+  HostPort: string;
+}
+
+/** GET /api/containers — a running Docker container (private). */
+export interface Container {
+  id: string;
+  name: string;
+  image: string;
+  status: string; // running | exited | paused | ...
+  health: string | null; // healthy | unhealthy | starting | null
+  started_at: string; // ISO
+  ports: Record<string, PortBinding[] | null> | null;
+}
+
 /** POST /api/login body. */
 export interface LoginRequest {
   username: string;

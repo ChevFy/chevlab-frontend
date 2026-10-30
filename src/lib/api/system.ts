@@ -3,6 +3,7 @@ import type {
   SystemInfo,
   LatestMetric,
   HistoryPoint,
+  Container,
   LoginRequest,
   TokenResponse,
 } from "@/types";
@@ -12,6 +13,7 @@ export const endpoints = {
   info: "/api/info",
   latest: "/api/latest",
   history: (hours: number) => `/api/history?hours=${hours}`,
+  containers: "/api/containers",
   login: "/api/login",
 } as const;
 
@@ -23,6 +25,9 @@ export const getLatest = () =>
 
 export const getHistory = (hours: number) =>
   api.get<HistoryPoint[]>(endpoints.history(hours)).then((r) => r.data);
+
+export const getContainers = () =>
+  api.get<Container[]>(endpoints.containers).then((r) => r.data);
 
 export const login = (body: LoginRequest) =>
   api.post<TokenResponse>(endpoints.login, body).then((r) => r.data);

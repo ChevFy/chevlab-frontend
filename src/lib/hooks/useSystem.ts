@@ -3,7 +3,7 @@
 import useSWR from "swr";
 import { fetcher } from "@/lib/api/client";
 import { endpoints } from "@/lib/api/system";
-import type { SystemInfo, LatestMetric, HistoryPoint } from "@/types";
+import type { SystemInfo, LatestMetric, HistoryPoint, Container } from "@/types";
 
 /** Static host info — fetch once, no polling. */
 export function useInfo() {
@@ -23,5 +23,12 @@ export function useLatest() {
 export function useHistory(hours: number) {
   return useSWR<HistoryPoint[]>(endpoints.history(hours), fetcher, {
     refreshInterval: 30000,
+  });
+}
+
+/** Running Docker containers (private) — refresh every 10s. */
+export function useContainers() {
+  return useSWR<Container[]>(endpoints.containers, fetcher, {
+    refreshInterval: 10000,
   });
 }

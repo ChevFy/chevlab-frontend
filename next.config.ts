@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 // Backend origin to proxy /api/* to. Override with BACKEND_URL in the environment.
-const BACKEND_URL = process.env.BACKEND_URL ?? "http://localhost:8000";
+// Strip trailing slash(es) so `https://host/` doesn't become `https://host//api/...` (→ 404).
+const BACKEND_URL = (process.env.BACKEND_URL ?? "http://localhost:8000").replace(/\/+$/, "");
 
 const nextConfig: NextConfig = {
   /* config options here */
