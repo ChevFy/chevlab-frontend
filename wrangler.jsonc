@@ -10,10 +10,9 @@
   },
   "vars": {
     // Backend origin the /api/* proxy forwards to. Trailing slash is stripped.
-    "BACKEND_URL": "https://chevlab.chevfy.com",
-    // Shared secret the proxy sends as `x-chevlab-proxy`; the backend's Cloudflare
-    // WAF allows worker→tunnel requests carrying it. If this repo is public, move
-    // it out with `wrangler secret put BACKEND_PROXY_SECRET` and delete this line.
-    "BACKEND_PROXY_SECRET": "cl_e3bf649d4be78bf1dc41a109a0f0cc45c56dc916f58b7cd3"
+    "BACKEND_URL": "https://chevlab.chevfy.com"
+    // BACKEND_PROXY_SECRET is NOT stored here — it's a secret, set out-of-band:
+    //   npx wrangler secret put BACKEND_PROXY_SECRET
+    // (keeps it out of git; the value must match the backend's WAF allow rule)
   }
 }
