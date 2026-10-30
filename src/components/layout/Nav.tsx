@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
 import {
   LayoutDashboard,
   LineChart,
@@ -10,12 +9,10 @@ import {
   ListTodo,
   CalendarDays,
   Lock,
-  LogIn,
-  LogOut,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthContext";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { Logo } from "@/components/ui/Logo";
+import { AuthButton } from "./AuthButton";
 
 type Item = {
   href: string;
@@ -35,20 +32,13 @@ const items: Item[] = [
 export function Nav() {
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthed, signOut } = useAuth();
-  const [confirmLogout, setConfirmLogout] = useState(false);
+  const { isAuthed } = useAuth();
 
   const handleNav = (item: Item, e: React.MouseEvent) => {
     if (item.protected && !isAuthed) {
       e.preventDefault();
       router.push("/login");
     }
-  };
-
-  const handleLogout = () => {
-    setConfirmLogout(false);
-    signOut();
-    router.push("/");
   };
 
   const links = items.map((item) => {
@@ -61,7 +51,7 @@ export function Nav() {
         href={item.href}
         onClick={(e) => handleNav(item, e)}
         aria-current={active ? "page" : undefined}
-        className={`group relative flex flex-1 flex-col items-center gap-1 rounded-md px-3 py-2 text-caption transition-colors md:flex-none md:flex-row md:gap-3 md:px-3 md:py-2.5 md:text-small ${
+        className={`group relative flex flex-1 flex-col items-center gap-1 rounded-md px-2 py-2 text-caption transition-colors md:flex-none md:flex-row md:gap-3 md:px-3 md:py-2.5 md:text-small ${
           active
             ? "bg-primary-50 font-medium text-primary-700"
             : "text-slate-500 hover:bg-slate-100"
@@ -81,42 +71,16 @@ export function Nav() {
     );
   });
 
-  const authButton = isAuthed ? (
-    <button
-      onClick={() => setConfirmLogout(true)}
-      className="flex flex-1 flex-col items-center gap-1 rounded-md px-3 py-2 text-caption text-red-600 transition-colors hover:bg-red-50 md:flex-none md:flex-row md:gap-3 md:py-2.5 md:text-small"
-    >
-      <LogOut className="h-5 w-5 shrink-0" />
-      <span>Logout</span>
-    </button>
-  ) : (
-    <Link
-      href="/login"
-      className="flex flex-1 flex-col items-center gap-1 rounded-md px-3 py-2 text-caption text-primary-600 transition-colors hover:bg-primary-50 md:flex-none md:flex-row md:gap-3 md:py-2.5 md:text-small"
-    >
-      <LogIn className="h-5 w-5 shrink-0" />
-      <span>Login</span>
-    </Link>
-  );
-
   return (
-    <>
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around gap-1 border-t border-slate-200 bg-white/95 px-2 py-1 backdrop-blur md:inset-y-0 md:left-0 md:right-auto md:w-64 md:flex-col md:justify-start md:gap-1 md:border-r md:border-t-0 md:bg-white md:p-4">
-        <div className="hidden px-2 pb-6 pt-2 md:block">
-          <Logo size="md" />
-        </div>
-        {links}
-        <div className="md:mt-auto md:border-t md:border-slate-200 md:pt-2">{authButton}</div>
-      </nav>
-
-      <ConfirmDialog
-        open={confirmLogout}
-        title="Log out?"
-        message="You'll need to sign in again to access private pages."
-        confirmLabel="Logout"
-        onConfirm={handleLogout}
-        onCancel={() => setConfirmLogout(false)}
-      />
-    </>
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-stretch justify-around gap-1 border-t border-slate-200 bg-white/95 px-2 py-1 backdrop-blur md:inset-y-0 md:left-0 md:right-auto md:w-64 md:flex-col md:justify-start md:gap-1 md:border-r md:border-t-0 md:bg-white md:p-4">
+      <div className="hidden px-2 pb-6 pt-2 md:block">
+        <Logo size="md" />
+      </div>
+      {links}
+      {/* Auth lives in the sidebar on desktop; on mobile it's in the top bar. */}
+      <div className="hidden md:mt-auto md:block md:border-t md:border-slate-200 md:pt-2">
+        <AuthButton variant="sidebar" />
+      </div>
+    </nav>
   );
 }
