@@ -56,12 +56,18 @@ pnpm lint       # lint
 |---|---|---|
 | `BACKEND_URL` | server-side only | Origin that Next proxies `/api/*` to (`next.config.ts` rewrites). Not exposed to the browser — the app calls the backend same-origin, so there's no CORS and no secret leak. A trailing slash is stripped automatically. |
 
-## Deployment
+## Deployment — Cloudflare Workers
 
-Frontend on **Cloudflare**, backend on your **homelab**:
+Runs on Cloudflare via the [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) adapter. Config lives in `wrangler.jsonc` + `open-next.config.ts`.
 
-1. Expose the homelab backend to the internet (public URL or a **Cloudflare Tunnel** hostname).
-2. In the Cloudflare Pages/Workers project, set the `BACKEND_URL` env var to that URL.
-3. The browser only ever talks to the frontend origin; Cloudflare proxies `/api/*` to the backend, so the backend needs no CORS config.
+```bash
+npx wrangler login     # once, interactive
+pnpm deploy            # opennextjs-cloudflare build && deploy
+pnpm preview           # optional: build + run the worker locally first
+```
 
-> Keep the frontend and backend on **different hostnames** (e.g. frontend `app.chevfy.com`, backend `chevlab.chevfy.com`) — pointing `BACKEND_URL` at the frontend's own domain self-proxies.
+- **Backend origin** — `BACKEND_URL` is set in `wrangler.jsonc` under `vars` (not a secret). Next proxies `/api/*` to it from the worker, so the browser stays same-origin and the backend needs no CORS.
+- The homelab backend must be reachable from Cloudflare (public URL or a **Cloudflare Tunnel** hostname).
+- Keep the frontend and backend on **different hostnames** (e.g. frontend `app.chevfy.com`, backend `chevlab.chevfy.com`) — pointing `BACKEND_URL` at the frontend's own domain self-proxies.
+
+> `pnpm preview` runs the worker locally and needs the `workerd` build script approved once: `pnpm approve-builds`. Plain `pnpm deploy` doesn't.

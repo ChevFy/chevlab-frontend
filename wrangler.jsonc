@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "chevlab-frontend",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+  "vars": {
+    // Backend origin Next proxies /api/* to. Not a secret — safe to commit.
+    // Trailing slash is stripped in next.config.ts.
+    "BACKEND_URL": "https://chevlab.chevfy.com"
+  }
+}
