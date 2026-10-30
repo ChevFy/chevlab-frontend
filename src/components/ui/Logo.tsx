@@ -12,7 +12,7 @@ export function Logo({
   return (
     <div className="flex items-center gap-3">
       <div
-        className={`flex items-center justify-center rounded-md bg-primary-600 font-bold text-white ${box}`}
+        className={`flex shrink-0 items-center justify-center rounded-md bg-primary-600 font-bold text-white ${box}`}
         aria-hidden
       >
         C
