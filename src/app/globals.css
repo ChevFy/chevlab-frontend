@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Brand palette (purple) ── */
-  --color-primary-50: #f4eef9;
-  --color-primary-100: #e4d6ee;
-  --color-primary-200: #c4a4da; /* given */
-  --color-primary-300: #9e7eb5; /* given */
-  --color-primary-400: #7f5d99; /* given */
-  --color-primary-500: #4c2365; /* given — main */
-  --color-primary-600: #3d1c51;
-  --color-primary-700: #2e153d;
+  /* ── Fonts ── */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
-  /* semantic aliases */
-  --color-brand: var(--color-primary-500);
-  --color-brand-muted: var(--color-primary-400);
-  --color-brand-soft: var(--color-primary-300);
-  --color-brand-light: var(--color-primary-200);
+  /* ── Brand accent (indigo) — used sparingly on a light neutral base ── */
+  --color-primary-50: #eef2ff;
+  --color-primary-100: #e0e7ff;
+  --color-primary-200: #c7d2fe;
+  --color-primary-300: #a5b4fc;
+  --color-primary-400: #818cf8;
+  --color-primary-500: #6366f1;
+  --color-primary-600: #4f46e5; /* main — buttons, active */
+  --color-primary-700: #4338ca;
+
+  --color-brand: var(--color-primary-600);
 
   /* ── Font sizes ── */
   --text-display: 3rem; /* 48px — hero */
@@ -36,19 +36,8 @@
   --text-caption--line-height: 1.4;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #1a1024;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #140b1c;
-    --foreground: #f4eef9;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #f1f5f9; /* slate-100 — enough contrast for white cards to read */
+  color: #0f172a; /* slate-900 */
+  font-family: var(--font-sans);
 }
